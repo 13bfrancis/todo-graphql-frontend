@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo-hooks';
+import { BrowserRouter } from 'react-router-dom';
 
 import './index.css';
-import App from './App';
+import App from './containers/App';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000',
@@ -24,10 +25,15 @@ const client = new ApolloClient({
     }
   }
 });
-
-ReactDOM.render(
+const ApolloComponent = () => (
   <ApolloProvider client={client}>
     <App />
-  </ApolloProvider>,
+  </ApolloProvider>
+);
+
+ReactDOM.render(
+  <BrowserRouter>
+    <ApolloComponent />
+  </BrowserRouter>,
   document.getElementById('root')
 );
