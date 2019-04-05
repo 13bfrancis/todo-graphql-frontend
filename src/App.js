@@ -1,28 +1,41 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header/Header';
+import gql from 'graphql-tag';
+import { useQuery, useApolloClient } from 'react-apollo-hooks';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+const LOGIN_QUERY = gql`
+  query LoginQuery {
+    loginUser(input: { email: "13bfrancis@gmail.com", password: "password" }) {
+      token
+      name
+    }
   }
-}
+`;
+
+const App = () => {
+  const client = useApolloClient();
+  const { data, loading, error } = useQuery(LOGIN_QUERY);
+  if (loading) {
+    return '...loading';
+  }
+  if (error) {
+    console.log(error);
+    return '...error';
+  }
+  console.log(data);
+  client.writeData({
+    data: {
+      token: data.loginUser.token
+    }
+  });
+  return (
+    <>
+      <Header>
+        <div>To Do List App</div>
+      </Header>
+      <p>{data.loginUser.name}</p>
+    </>
+  );
+};
 
 export default App;

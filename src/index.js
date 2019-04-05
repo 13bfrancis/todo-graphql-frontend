@@ -1,12 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ApolloClient from 'apollo-boost';
+import { ApolloProvider } from 'react-apollo-hooks';
+
 import './index.css';
 import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const client = new ApolloClient({
+  uri: 'http://localhost:4000',
+  request: async operation => {
+    const token = operation.getContext().cache.data.data.ROOT_QUERY.token;
+    operation.setContext({
+      headers: {
+        authorization: `Bearer ${token}`
+      }
+    });
+  },
+  clientState: {
+    defaults: {
+      token: '',
+      email: '',
+      name: ''
+    }
+  }
+});
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById('root')
+);

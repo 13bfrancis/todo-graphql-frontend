@@ -1,0 +1,22 @@
+.header {
+    padding: 1rem;
+    padding-bottom: 1.5rem;
+    font-size: 4rem;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    box-sizing: border-box;
+    border-bottom: 1px solid black;
+    box-shadow: 4px 0 10px rgba(0, 0, 0, .3);
+}
+
+.btn {
+    font-size: inherit;
+    border: none;
+    background: none;
+    outline-color: grey;
+}
+
+.btn:hover {
+    cursor: pointer;
+}
